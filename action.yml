@@ -44,3 +44,6 @@ runs:
           WRITES: ${{ inputs.writes }}
         run: |
           aws dynamodb create-table --table-name ${TABLE_NAME} --attribute-definitions AttributeName=${FIELD_NAME},AttributeType=S --key-schema AttributeName=${FIELD_NAME},KeyType=HASH --provisioned-throughput ReadCapacityUnits=${READS},WriteCapacityUnits=${WRITES}
+branding:
+  icon: arrow-up-circle
+  color: blue
