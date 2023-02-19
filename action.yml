@@ -1,0 +1,46 @@
+name: 'ntd - create a dynamodb table'
+description: 'ntd - create a dynamodb table'
+inputs:
+  aws_access_key_id:
+    description: 'AWS Access Key'
+    required: true
+  aws_secret_access_key:
+    description: 'AWS Secret Key'
+    required: true
+  aws_region:
+    description: 'AWS Region'
+    required: true
+  table_name:  
+    description: 'Table name'
+    required: true
+  field_name:  
+    description: 'Field name'
+    required: false
+    default: 'LockID'
+  reads:
+    description: 'Read throughput'
+    required: false
+    default: 1
+  writes:
+    description: 'Write throughput'
+    required: false
+    default: 1
+runs:
+  using: "composite"
+  steps:
+    - name: Initial AWS Account
+        uses: aws-actions/configure-aws-credentials@master
+        with:
+          aws-access-key-id: ${{ inputs.aws_access_key_id }}
+          aws-secret-access-key: ${{ inputs.aws_secret_access_key }}
+          aws-region: ${{ inputs.aws_region }}
+          mask-aws-account-id: true
+
+    - name: Create a table
+        env:
+          TABLE_NAME: ${{ inputs.table_name }}
+          FIELD_NAME: ${{ inputs.field_name }}
+          READS: ${{ inputs.reads }}
+          WRITES: ${{ inputs.writes }}
+        run: |
+          aws dynamodb create-table --table-name ${TABLE_NAME} --attribute-definitions AttributeName=${FIELD_NAME},AttributeType=S --key-schema AttributeName=${FIELD_NAME},KeyType=HASH --provisioned-throughput ReadCapacityUnits=${READS},WriteCapacityUnits=${WRITES}
