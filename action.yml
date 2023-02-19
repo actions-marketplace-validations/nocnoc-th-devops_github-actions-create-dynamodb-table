@@ -26,6 +26,7 @@ inputs:
     required: false
     default: 1
 runs:
+  using: "composite"
   steps:
     - name: Initial AWS Account
         uses: aws-actions/configure-aws-credentials@master
@@ -36,13 +37,14 @@ runs:
           mask-aws-account-id: true
 
     - name: Create a table
-        env:
-          TABLE_NAME: ${{ inputs.table_name }}
-          FIELD_NAME: ${{ inputs.field_name }}
-          READS: ${{ inputs.reads }}
-          WRITES: ${{ inputs.writes }}
-        run: |
-          aws dynamodb create-table --table-name ${TABLE_NAME} --attribute-definitions AttributeName=${FIELD_NAME},AttributeType=S --key-schema AttributeName=${FIELD_NAME},KeyType=HASH --provisioned-throughput ReadCapacityUnits=${READS},WriteCapacityUnits=${WRITES}
+      shell: bash
+      env:
+        TABLE_NAME: ${{ inputs.table_name }}
+        FIELD_NAME: ${{ inputs.field_name }}
+        READS: ${{ inputs.reads }}
+        WRITES: ${{ inputs.writes }}
+      run: |
+        aws dynamodb create-table --table-name ${TABLE_NAME} --attribute-definitions AttributeName=${FIELD_NAME},AttributeType=S --key-schema AttributeName=${FIELD_NAME},KeyType=HASH --provisioned-throughput ReadCapacityUnits=${READS},WriteCapacityUnits=${WRITES}
 branding:
   icon: arrow-up-circle
   color: blue
