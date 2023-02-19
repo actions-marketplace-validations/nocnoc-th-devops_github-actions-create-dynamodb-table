@@ -26,7 +26,6 @@ inputs:
     required: false
     default: 1
 runs:
-  using: "composite"
   steps:
     - name: Initial AWS Account
         uses: aws-actions/configure-aws-credentials@master
