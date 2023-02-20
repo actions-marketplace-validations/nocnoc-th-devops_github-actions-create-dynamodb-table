@@ -20,21 +20,21 @@ inputs:
   reads:
     description: 'Read throughput'
     required: false
-    default: 1
+    default: "1"
   writes:
     description: 'Write throughput'
     required: false
-    default: 1
+    default: "1"
 runs:
   using: "composite"
   steps:
     - name: Initial AWS Account
-        uses: aws-actions/configure-aws-credentials@master
-        with:
-          aws-access-key-id: ${{ inputs.aws_access_key_id }}
-          aws-secret-access-key: ${{ inputs.aws_secret_access_key }}
-          aws-region: ${{ inputs.aws_region }}
-          mask-aws-account-id: true
+      uses: aws-actions/configure-aws-credentials@master
+      with:
+        aws-access-key-id: ${{ inputs.aws_access_key_id }}
+        aws-secret-access-key: ${{ inputs.aws_secret_access_key }}
+        aws-region: ${{ inputs.aws_region }}
+        mask-aws-account-id: true
 
     - name: Create a table
       shell: bash
